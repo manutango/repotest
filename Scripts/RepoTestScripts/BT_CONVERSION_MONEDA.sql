@@ -2,6 +2,7 @@
 --select * from [modelo_capsa].[BT_CONVERSION_MONEDA]
 
 --Carga [BT_CONVERSION_MONEDA]
+--aa
 
 INSERT INTO [modelo_capsa].[BT_CONVERSION_MONEDA]
            ([sk_moneda_origen]
