@@ -1,0 +1,33 @@
+-- Drop table
+
+-- DROP TABLE DW.modelo_capsa.DT_ACTIVO GO
+
+CREATE TABLE DW.modelo_capsa.DT_ACTIVO (
+	sk_activo int NOT NULL,
+	id_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	nombre_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	compañía_jde varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	desc_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	rubro_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	rubro_activo_desc varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	subrubro_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	subrubro_activo_desc varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	id_clase_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	desc_clase_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	sk_categoria_activo_contable int NULL,
+	id_pozo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	latitud float NULL,
+	longitud float NULL,
+	id_instalación int NOT NULL,
+	sk_ubicacion varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	ciclo_combinado varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	id_gis int NULL,
+	familia varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	modelo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	tipo_activo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	tipo_activo_desc varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	id_centro int NOT NULL,
+	id_activo_padre varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	sk_unidad_generadora_ct int NULL
+) GO
+CREATE INDEX ClusteredIndex_e286610e31d64da3944896d750cb9b3b ON DW.modelo_capsa.DT_ACTIVO (sk_activo,id_activo,nombre_activo,compañía_jde,desc_activo,rubro_activo,rubro_activo_desc,subrubro_activo,subrubro_activo_desc,id_clase_activo,desc_clase_activo,sk_categoria_activo_contable,id_pozo,latitud,longitud,id_instalación,sk_ubicacion,ciclo_combinado,id_gis,familia,modelo,tipo_activo,tipo_activo_desc,id_centro,id_activo_padre,sk_unidad_generadora_ct) GO

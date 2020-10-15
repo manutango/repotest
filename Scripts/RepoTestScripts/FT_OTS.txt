@@ -1,0 +1,105 @@
+
+TRUNCATE TABLE STO.FT_OTS;
+
+
+--752
+INSERT INTO STO.FT_OTS
+SELECT 
+id_escenario_version, id_fecha, id_periodo, id_unidad_negocio, id_empresa, id_grupo_empresa, id_ubicacion, 
+id_activo, id_ubicacion_jde, desc_ubicacion_jde, nro_ot, tarea, servicio, cant_dias_servicio, actividad, 
+tipo_equipo, especialidad, tipo_mantenimiento, es_plan, estado, motivo, fecha_ultima_mapro, fecha_primera_planificacion, 
+dias_exceso, fecha_orden, fecha_fin, tipo_recurso, responsable, mesActual_mesAnterior
+FROM (
+		select 
+		'1' as id_escenario_version, -- REAL Final
+		C.id_fecha as id_fecha,
+		E.id_periodo as id_periodo, 
+		'ND' as id_unidad_negocio,
+		D.id_empresa as id_empresa,
+		F.id_compuesto_grempfec as id_grupo_empresa, 
+		'ND' as id_ubicacion,
+		B.id_activo,
+		A.id_ubicacion_jde, 
+		A.desc_ubicacion_jde,
+		A.nro_ot,
+		A.tarea, 
+		A.servicio, 
+		A.cant_dias_servicio, 
+		A.actividad, 
+		A.tipo_equipo, 
+		A.especialidad, 
+		A.tipo_mantenimiento, 
+		A.es_plan, 
+		A.estado, 
+		A.motivo,
+		A.fecha_ultima_mapro,
+		A.fecha_primera_planificacion, 
+		A.dias_exceso, 
+		A.fecha_orden, 
+		A.fecha_fin, 
+		A.tipo_recurso, 
+		A.responsable,
+		CASE WHEN DATEDIFF(MONTH,A.fecha,ISNULL(ISNULL(A.fecha_primera_planificacion,A.fecha_orden),A.fecha))=0 THEN 'MES ACTUAL' ELSE 'MES ANTERIOR'END as mesActual_mesAnterior
+		from STI.OT_RESUMEN_FORMATEADO A
+		left outer join STO.DT_ACTIVO B on A.nombre_activo = B.nombre_activo 
+		left outer join STO.DT_FECHA C on A.fecha = C.fecha 
+		left outer join STO.DT_EMPRESA D on D.id_empresa = right('0'+B.compañía_jde,2)
+		left outer join STO.DT_PERIODO E on E.tipo_ejercicio = D.tipo_ejercicio and E.id_mes = C.añomes and E.id_ejercicio_subgrupo is null
+		-- left outer join STO.DT_GRUPO_EMPRESA F on F.id_empresa = D.id_empresa and F.id_periodo = E.id_periodo 
+		LEFT OUTER JOIN STO.DT_GRUPO_EMPRESA F ON F.id_empresa = D.id_empresa  
+										  and A.fecha BETWEEN F.fecha_desde and isnull(F.fecha_hasta,getdate())
+		where 1=1 
+		and FLAG_ARCHIVO ='Programados'
+	)A
+;
+
+
+--------
+
+
+TRUNCATE TABLE modelo_capsa.FT_OTS;
+
+INSERT INTO modelo_capsa.FT_OTS 
+SELECT 
+ISNULL(B.sk_escenario_version,-3) as sk_escenario_version, 
+ISNULL(D.sk_fecha,-3) as sk_fecha, 
+ISNULL(E.sk_periodo,-3) as sk_periodo, 
+ISNULL(F.sk_unidad_negocio,-3) as sk_unidad_negocio, 
+ISNULL(G.sk_empresa,-3) as sk_empresa, 
+ISNULL(H.sk_grupo_empresa,-3) as sk_grupo_empresa, 
+ISNULL(I.sk_ubicacion,-3) as sk_ubicacion, 
+ISNULL(J.sk_activo,-3) as sk_activo,
+A.id_ubicacion_jde, 
+A.desc_ubicacion_jde, 
+A.nro_ot, 
+A.tarea, 
+A.servicio, 
+A.cant_dias_servicio, 
+A.actividad, 
+A.tipo_equipo, 
+A.especialidad, 
+A.tipo_mantenimiento, 
+A.es_plan, 
+A.estado, 
+A.motivo, 
+A.fecha_ultima_mapro, 
+A.fecha_primera_planificacion, 
+A.dias_exceso, 
+A.fecha_orden, 
+A.fecha_fin, 
+A.tipo_recurso, 
+A.responsable, 
+A.mesActual_mesAnterior
+FROM STO.FT_OTS A 
+LEFT OUTER JOIN modelo_capsa.DT_ESCENARIO_VERSION B on A.id_escenario_version = B.id_escenario_version 
+LEFT OUTER JOIN modelo_capsa.DT_FECHA D on A.id_fecha = D.id_fecha
+LEFT OUTER JOIN modelo_capsa.DT_PERIODO E on A.id_periodo = E.id_periodo
+LEFT OUTER JOIN modelo_capsa.DT_UNIDAD_NEGOCIO F on A.id_unidad_negocio = F.id_unidad_negocio
+LEFT OUTER JOIN modelo_capsa.DT_EMPRESA G on A.id_empresa = G.id_empresa
+LEFT OUTER JOIN modelo_capsa.DT_GRUPO_EMPRESA H on A.id_grupo_empresa = H.id_compuesto_grempfec 
+LEFT OUTER JOIN modelo_capsa.DT_UBICACION I on A.id_ubicacion = I.id_ubicacion
+LEFT OUTER JOIN modelo_capsa.DT_ACTIVO J on A.id_activo = J.id_activo
+WHERE 1=1
+;
+
+
