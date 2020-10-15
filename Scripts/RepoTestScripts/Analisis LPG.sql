@@ -2,7 +2,7 @@
 select distinct estado
 from DW.staging_in.SGO_CIERRE_DIARIO_LPG
 
-
+----
 
 /*
 LPG Análisis previo:
